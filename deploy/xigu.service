@@ -1,0 +1,28 @@
+[Unit]
+Description=Xigu Customer Service Platform
+After=network.target
+
+[Service]
+Type=simple
+User=xigu
+Group=xigu
+WorkingDirectory=/opt/xigu/app
+Environment=NODE_ENV=production
+Environment=PORT=3000
+Environment=DB_PATH=/var/lib/xigu/app.db
+ExecStart=/usr/local/bin/node --disable-warning=ExperimentalWarning server.js
+Restart=always
+RestartSec=3
+KillSignal=SIGTERM
+TimeoutStopSec=20
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/var/lib/xigu
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=xigu
+
+[Install]
+WantedBy=multi-user.target

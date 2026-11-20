@@ -1,0 +1,6 @@
+[Unit]
+Description=Watch GitHub main branch and deploy on change
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/xigu-watch.sh
