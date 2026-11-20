@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>员工登录 · 溪谷优选客服平台</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%23e8582a'/><text x='32' y='43' font-size='34' font-family='PingFang SC,sans-serif' fill='white' text-anchor='middle'>溪</text></svg>" />
+<link rel="stylesheet" href="/assets/theme.css" />
+<style>
+  body { background: #fff; }
+  .login { display: grid; grid-template-columns: 1.05fr .95fr; min-height: 100dvh; }
+
+  .l-brand {
+    position: relative;
+    background: var(--sidebar);
+    color: #fff;
+    padding: 46px 52px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .l-brand::before {
+    content: '';
+    position: absolute;
+    width: 620px; height: 620px;
+    right: -220px; top: -160px;
+    background: radial-gradient(circle, rgba(232, 88, 42, .38), rgba(232, 88, 42, 0) 62%);
+    pointer-events: none;
+  }
+  .l-brand::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);
+    background-size: 46px 46px;
+    mask-image: radial-gradient(circle at 30% 30%, #000 10%, transparent 78%);
+    pointer-events: none;
+  }
+  .l-logo { display: flex; align-items: center; gap: 11px; font-weight: 600; font-size: 14.5px; position: relative; z-index: 1; }
+  .l-logo .mark {
+    width: 32px; height: 32px; border-radius: 9px;
+    background: linear-gradient(140deg, #f2703f, #d94a1c);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    box-shadow: 0 6px 16px -6px rgba(232, 88, 42, .8);
+  }
+  .l-logo small { font-weight: 400; font-size: 11px; color: rgba(255,255,255,.5); border-left: 1px solid rgba(255,255,255,.18); padding-left: 10px; margin-left: 2px; }
+
+  .l-quote { margin-top: auto; position: relative; z-index: 1; max-width: 440px; }
+  .l-quote h1 { font-size: 38px; line-height: 1.24; letter-spacing: -.03em; font-weight: 600; margin-bottom: 18px; }
+  .l-quote h1 em { font-style: normal; color: #ff8b5e; }
+  .l-quote p { font-size: 13.5px; line-height: 1.8; color: rgba(255,255,255,.62); }
+
+  .l-roles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 34px; position: relative; z-index: 1; }
+  .l-role {
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 12px;
+    padding: 12px 13px;
+    background: rgba(255,255,255,.03);
+  }
+  .l-role b { display: block; font-size: 12.5px; margin-bottom: 3px; }
+  .l-role span { font-size: 10.5px; line-height: 1.5; color: rgba(255,255,255,.45); display: block; }
+
+  .l-foot { margin-top: 30px; font-size: 11px; color: rgba(255,255,255,.3); position: relative; z-index: 1; }
+
+  .l-form-wrap { display: flex; align-items: center; justify-content: center; padding: 40px 32px; }
+  .l-form { width: 100%; max-width: 352px; }
+  .l-form h2 { font-size: 24px; letter-spacing: -.025em; font-weight: 650; margin-bottom: 6px; }
+  .l-form .sub { font-size: 13px; color: var(--ink-3); margin-bottom: 30px; }
+
+  .l-form .field { margin-bottom: 15px; }
+  .l-form .input { height: 42px; font-size: 14px; }
+  .l-form .btn-primary { height: 43px; font-size: 14px; border-radius: 11px; margin-top: 8px; }
+
+  .l-error {
+    background: var(--danger-soft); color: #b42318; font-size: 12.5px;
+    padding: 9px 12px; border-radius: 9px; margin-bottom: 14px;
+  }
+
+  .l-demos { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--line-2); }
+  .l-demos .t { font-size: 11.5px; color: var(--ink-3); margin-bottom: 9px; }
+  .demo-list { display: flex; flex-direction: column; gap: 6px; }
+  .demo-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px;
+    background: #fff; text-align: left; transition: all .15s;
+  }
+  .demo-item:hover { border-color: var(--brand-line); background: var(--brand-soft); }
+  .demo-item .nm { font-size: 12.5px; font-weight: 500; }
+  .demo-item .rl { font-size: 11px; color: var(--ink-3); }
+  .demo-item .go { margin-left: auto; font-size: 11px; color: var(--brand); opacity: 0; transition: opacity .15s; }
+  .demo-item:hover .go { opacity: 1; }
+
+  .l-back { text-align: center; margin-top: 26px; font-size: 12px; color: var(--ink-3); }
+  .l-back a:hover { color: var(--brand); }
+
+  @media (max-width: 880px) {
+    .login { grid-template-columns: 1fr; }
+    .l-brand { display: none; }
+    .l-form-wrap { min-height: 100dvh; padding: 32px 22px; align-items: flex-start; padding-top: 12vh; background: radial-gradient(600px 400px at 50% -10%, #fff1e8, #fff 60%); }
+    .l-form::before {
+      content: '溪谷优选 · 客服平台';
+      display: block;
+      font-size: 12px;
+      color: var(--brand);
+      font-weight: 600;
+      letter-spacing: .02em;
+      margin-bottom: 14px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="login">
+  <aside class="l-brand">
+    <div class="l-logo">
+      <span class="mark">溪</span>
+      溪谷优选
+      <small>客服协同平台 v1.0</small>
+    </div>
+
+    <div class="l-quote">
+      <h1>让每一次对话，<br /><em>都有人接得住。</em></h1>
+      <p>智能客服负责即时响应与知识匹配，人工客服负责复杂诉求与情绪安抚。会话、客户资料、上下文摘要在一条链路上流转。</p>
+
+      <div class="l-roles">
+        <div class="l-role"><b>访客</b><span>在线咨询 / 多轮追问 / 评价</span></div>
+        <div class="l-role"><b>客服</b><span>排队接入 / 接管转接 / 工作台</span></div>
+        <div class="l-role"><b>管理员</b><span>数据看板 / 知识库 / 规则</span></div>
+      </div>
+    </div>
+
+    <div class="l-foot">© 2026 溪谷优选 · 客户服务中心</div>
+  </aside>
+
+  <main class="l-form-wrap">
+    <div class="l-form">
+      <h2>员工登录</h2>
+      <p class="sub">客服与管理员使用统一入口，按角色进入对应工作台。</p>
+
+      <div class="l-error hidden" id="err"></div>
+
+      <form id="loginForm">
+        <div class="field">
+          <label for="username">账号</label>
+          <input class="input" id="username" autocomplete="username" placeholder="例如 agent1" />
+        </div>
+        <div class="field">
+          <label for="password">密码</label>
+          <input class="input" id="password" type="password" autocomplete="current-password" placeholder="请输入密码" />
+        </div>
+        <button class="btn btn-primary btn-block" id="submit" type="submit">登录</button>
+      </form>
+
+      <div class="l-demos">
+        <div class="t">演示账号（点击填入）</div>
+        <div class="demo-list">
+          <button class="demo-item" data-u="agent1" data-p="agent123">
+            <span class="avatar avatar-sm" style="background:#f2612c">小满</span>
+            <span><span class="nm">林小满</span> <span class="rl">· 客服工作台</span></span>
+            <span class="go">填入 →</span>
+          </button>
+          <button class="demo-item" data-u="agent2" data-p="agent123">
+            <span class="avatar avatar-sm" style="background:#2563eb">周予</span>
+            <span><span class="nm">周予</span> <span class="rl">· 客服工作台</span></span>
+            <span class="go">填入 →</span>
+          </button>
+          <button class="demo-item" data-u="admin" data-p="admin123">
+            <span class="avatar avatar-sm" style="background:#141a24">见山</span>
+            <span><span class="nm">林见山</span> <span class="rl">· 管理控制台</span></span>
+            <span class="go">填入 →</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="l-back"><a href="/">← 返回访客端聊天</a></div>
+    </div>
+  </main>
+</div>
+
+<script src="/assets/common.js"></script>
+<script>
+(function () {
+  CS.store.setScope('staff');
+  const { api, store, qs } = CS;
+  const form = qs('#loginForm');
+  const err = qs('#err');
+  const btn = qs('#submit');
+
+  (async () => {
+    if (!store.token) return;
+    try {
+      const me = await api('/auth/me');
+      location.replace(me.user.role === 'admin' ? '/admin' : '/agent');
+    } catch (e) {
+      store.token = '';
+    }
+  })();
+
+  document.querySelectorAll('.demo-item').forEach((el) => {
+    el.addEventListener('click', () => {
+      qs('#username').value = el.dataset.u;
+      qs('#password').value = el.dataset.p;
+      qs('#password').focus();
+    });
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    err.classList.add('hidden');
+    btn.disabled = true;
+    btn.textContent = '登录中…';
+    try {
+      const res = await api('/auth/login', {
+        method: 'POST',
+        body: { username: qs('#username').value.trim(), password: qs('#password').value },
+        token: ''
+      });
+      store.token = res.token;
+      location.href = res.user.role === 'admin' ? '/admin' : '/agent';
+    } catch (e2) {
+      err.textContent = e2.message;
+      err.classList.remove('hidden');
+      btn.disabled = false;
+      btn.textContent = '登录';
+    }
+  });
+})();
+</script>
+</body>
+</html>

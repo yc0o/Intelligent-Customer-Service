@@ -1,0 +1,32 @@
+# 运行时数据（含访客个人信息与账号哈希，禁止入库）
+data/
+*.db
+*.db-wal
+*.db-shm
+
+# 本地环境与密钥
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# 依赖与构建产物
+node_modules/
+dist/
+build/
+.shots/
+
+# 日志
+*.log
+logs/
+
+# 编辑器与系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Agent 工作区（本地记忆与缓存，不对外）
+.workbuddy/

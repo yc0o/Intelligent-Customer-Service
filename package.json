@@ -1,0 +1,16 @@
+{
+  "name": "xigu-support",
+  "version": "1.0.0",
+  "private": true,
+  "description": "溪谷优选智能客服协同平台 - 访客 / 客服 / 管理员三角色",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning server.js",
+    "dev": "node --disable-warning=ExperimentalWarning server.js",
+    "reset": "node scripts/reset.js",
+    "verify": "node scripts/verify.js"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  }
+}

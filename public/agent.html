@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>客服工作台 · 溪谷优选</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%23e8582a'/><text x='32' y='43' font-size='34' font-family='PingFang SC,sans-serif' fill='white' text-anchor='middle'>溪</text></svg>" />
+<link rel="stylesheet" href="/assets/theme.css" />
+<link rel="stylesheet" href="/assets/agent.css" />
+</head>
+<body class="agent-page">
+
+<header class="topbar">
+  <div class="brand">
+    <span class="mark">溪</span>
+    <span class="brand-text">客服工作台</span>
+    <span class="brand-sep"></span>
+    <span class="brand-sub">Customer Desk</span>
+  </div>
+
+  <div class="topbar-right">
+    <div class="status-wrap" id="statusWrap">
+      <button class="status-btn" id="statusBtn">
+        <span class="dot dot-online" id="statusDot"></span>
+        <span id="statusText">在线</span>
+        <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 4.5 6 7.5 9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+      <div class="status-menu hidden" id="statusMenu">
+        <button data-s="online"><span class="dot dot-online"></span><div><b>在线</b><span>接收自动分配与排队会话</span></div></button>
+        <button data-s="busy"><span class="dot dot-busy"></span><div><b>忙碌</b><span>不再分配新会话，可处理现有</span></div></button>
+        <button data-s="offline"><span class="dot dot-offline"></span><div><b>离线</b><span>退出分配队列</span></div></button>
+      </div>
+    </div>
+
+    <div class="me">
+      <span class="avatar avatar-sm" id="meAvatar">小满</span>
+      <div class="me-info"><b id="meName">—</b><span id="meTitle">—</span></div>
+    </div>
+    <button class="btn btn-ghost btn-sm" id="btnLogout">退出</button>
+  </div>
+</header>
+
+<main class="agent-grid" id="grid">
+
+  <section class="pane list-pane">
+    <div class="list-head">
+      <div class="list-top">
+        <b class="list-title">会话</b>
+        <span class="badge badge-orange hidden" id="queueBadge">0</span>
+        <span class="flex-1"></span>
+        <span class="load-hint" id="loadHint">0 / 4</span>
+      </div>
+      <div class="seg seg-block" id="tabs">
+        <button data-tab="queue" class="on">排队中</button>
+        <button data-tab="mine">我的会话</button>
+      </div>
+      <div class="search-box">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.6" stroke="currentColor" stroke-width="1.4"/><path d="m10.6 10.6 3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <input id="search" placeholder="搜索访客或聊天内容" />
+      </div>
+    </div>
+    <div class="conv-list scroll" id="convList"></div>
+  </section>
+
+  <section class="pane chat-pane">
+    <div class="chat-empty" id="chatEmpty">
+      <div class="ce-icon">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H9l-4 3.5v-3.5H6.5A2.5 2.5 0 0 1 4 13.5v-7Z" stroke="currentColor" stroke-width="1.4"/></svg>
+      </div>
+      <b>选择一个会话开始接待</b>
+      <p>左侧「排队中」有访客在等待接入，接入后可以看到客户资料与 AI 会话摘要。</p>
+    </div>
+
+    <div class="chat-view hidden" id="chatView">
+      <header class="c-head">
+        <button class="back-btn" id="backBtn" aria-label="返回列表">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3 5 8l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <span class="avatar" id="cAvatar">访</span>
+        <div class="c-who">
+          <div class="c-name-row">
+            <b id="cName">—</b>
+            <span class="badge" id="cLevel">普通会员</span>
+            <span class="badge badge-amber hidden" id="cWaiting">排队中</span>
+          </div>
+          <div class="c-sub" id="cSub">—</div>
+        </div>
+        <div class="c-actions">
+          <button class="btn btn-sm" id="btnProfile" title="客户信息">客户</button>
+          <button class="btn btn-sm" id="btnTransfer">转接</button>
+          <button class="btn btn-sm btn-danger" id="btnEnd">结束</button>
+        </div>
+      </header>
+
+      <div class="c-summary" id="cSummary">
+        <div class="sum-head">
+          <span class="sum-tag">AI 摘要</span>
+          <span class="flex-1"></span>
+          <button class="sum-toggle" id="sumToggle">收起</button>
+        </div>
+        <div class="sum-body pre-line" id="cSummaryText"></div>
+      </div>
+
+      <div class="c-body scroll" id="cBody"></div>
+
+      <div class="claim-bar hidden" id="claimBar">
+        <div><b>该会话在排队中</b><span>接入后可查看完整上下文并回复</span></div>
+        <button class="btn btn-primary btn-sm" id="btnClaim">接入会话</button>
+      </div>
+
+      <form class="c-composer" id="cForm">
+        <div class="composer-box">
+          <textarea id="cInput" rows="1" maxlength="1000" placeholder="输入回复，Enter 发送 / Shift + Enter 换行"></textarea>
+          <div class="composer-actions">
+            <button type="button" class="tool-btn" id="btnQuick" title="快捷回复">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M3 8h7M3 12h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              话术
+            </button>
+            <span class="typing-hint" id="typingHint"></span>
+            <button class="btn btn-primary btn-sm" type="submit" id="btnSendMsg">发送</button>
+          </div>
+        </div>
+        <div class="composer-tip">Enter 发送 · 会话内容将同步给访客并留档</div>
+      </form>
+    </div>
+  </section>
+
+  <aside class="pane profile-pane" id="profilePane">
+    <div class="p-tabs">
+      <button data-p="customer" class="on">客户信息</button>
+      <button data-p="assist">话术助手</button>
+      <button class="p-close" id="pClose" aria-label="关闭">✕</button>
+    </div>
+    <div class="p-body scroll" id="pBody"></div>
+  </aside>
+
+</main>
+
+<script src="/assets/common.js"></script>
+<script src="/assets/agent.js"></script>
+</body>
+</html>

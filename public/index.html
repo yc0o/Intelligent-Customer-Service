@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#f4f6f9" />
+<title>溪谷优选 · 在线客服</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%23e8582a'/><text x='32' y='43' font-size='34' font-family='PingFang SC,sans-serif' fill='white' text-anchor='middle'>溪</text></svg>" />
+<link rel="stylesheet" href="/assets/theme.css" />
+<link rel="stylesheet" href="/assets/visitor.css" />
+</head>
+<body class="visitor-page">
+
+<div class="v-shell">
+  <aside class="v-intro">
+    <div class="v-brand">
+      <span class="v-logo">溪</span>
+      <span>溪谷优选</span>
+      <span class="v-brand-tag">客户服务中心</span>
+    </div>
+
+    <h1>有人在线，<br /><em>问题不用等。</em></h1>
+    <p class="v-lead">智能客服 7×24 小时值守，常见问题即时答复；遇到复杂情况，一键交给真人同事，聊天记录会一起带过去。</p>
+
+    <ul class="v-points">
+      <li>
+        <span class="v-num">01</span>
+        <div><b>秒级响应，答案有出处</b><p>知识库实时匹配，答复标注参考条目，不做无依据的编造。</p></div>
+      </li>
+      <li>
+        <span class="v-num">02</span>
+        <div><b>多轮追问，不用重复描述</b><p>会话记住上文与订单号，接着问“多久到账”也能听懂。</p></div>
+      </li>
+      <li>
+        <span class="v-num">03</span>
+        <div><b>该转就转，人工带着摘要接入</b><p>低置信度、情绪激动或你主动要求时，自动进入人工队列。</p></div>
+      </li>
+    </ul>
+
+    <div class="v-stats">
+      <div><b>09:00–22:00</b><span>人工在线时段</span></div>
+      <div><b>7×24</b><span>智能客服值守</span></div>
+      <div><b>全程留痕</b><span>记录可追溯</span></div>
+    </div>
+  </aside>
+
+  <section class="v-chat" id="chatCard">
+    <header class="chat-head">
+      <div class="avatar avatar-brand" id="headAvatar">溪</div>
+      <div class="who">
+        <div class="who-top"><b id="headName">智能客服小满</b><span class="badge badge-orange" id="headBadge">AI</span></div>
+        <div class="who-sub"><span class="dot dot-online" id="headDot"></span><span id="headStatus">在线 · 通常立即回复</span></div>
+      </div>
+      <div class="head-actions">
+        <button class="btn btn-sm" id="btnHuman">转人工</button>
+      </div>
+    </header>
+
+    <div class="topic-bar" id="topicBar">
+      <span class="topic-label">当前话题</span>
+      <span class="topic-text truncate" id="topicText">—</span>
+      <button class="link-btn" id="btnClose">结束会话</button>
+    </div>
+
+    <div class="queue-banner hidden" id="queueBanner">
+      <span class="q-spin"></span>
+      <div class="flex-1">
+        <b id="queueTitle">正在为你排队</b>
+        <p id="queueSub">前面还有 0 位，请稍候</p>
+      </div>
+    </div>
+
+    <div class="chat-body scroll" id="chatBody"></div>
+
+    <div class="quick-row" id="quickRow"></div>
+
+    <div class="composer-wrap">
+      <form class="composer" id="composer">
+        <textarea id="input" rows="1" maxlength="1000" placeholder="输入你的问题，Enter 发送 / Shift + Enter 换行"></textarea>
+        <button type="submit" class="send-btn" id="btnSend" aria-label="发送">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 12l15-7-5.5 7 5.5 7-15-7z" fill="currentColor"/></svg>
+        </button>
+      </form>
+      <div class="composer-foot">
+        <span>由溪谷智能客服提供支持</span>
+        <span class="sep">·</span>
+        <span>记录仅用于服务改进</span>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="/assets/common.js"></script>
+<script src="/assets/visitor.js"></script>
+</body>
+</html>

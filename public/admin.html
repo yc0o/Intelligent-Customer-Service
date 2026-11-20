@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>管理控制台 · 溪谷优选客服平台</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%23e8582a'/><text x='32' y='43' font-size='34' font-family='PingFang SC,sans-serif' fill='white' text-anchor='middle'>溪</text></svg>" />
+<link rel="stylesheet" href="/assets/theme.css" />
+<link rel="stylesheet" href="/assets/admin.css" />
+</head>
+<body class="admin-page">
+
+<div class="shell">
+  <aside class="side">
+    <div class="side-brand">
+      <span class="mark">溪</span>
+      <div class="sb-text"><b>溪谷优选</b><span>客服控制台</span></div>
+    </div>
+
+    <nav class="side-nav" id="nav">
+      <button class="on" data-view="overview">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="2" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.3"/><rect x="2" y="9" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="9" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.3"/></svg>
+        运营概览
+      </button>
+      <button data-view="records">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 3.5h10M3 8h10M3 12.5h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        会话记录
+      </button>
+      <button data-view="kb">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 3.2A1.2 1.2 0 0 1 4.2 2H12v12H4.2A1.2 1.2 0 0 1 3 12.8V3.2Z" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 5.5h4M5.5 8h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        知识库
+      </button>
+      <button data-view="team">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="6" cy="5.5" r="2.3" stroke="currentColor" stroke-width="1.3"/><path d="M2.2 13c.3-2 1.9-3.2 3.8-3.2s3.5 1.2 3.8 3.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M11 4.2a2 2 0 0 1 0 3.9M12 9.9c1.2.4 1.9 1.4 2 2.9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        客服团队
+      </button>
+      <button data-view="rules">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.2" stroke="currentColor" stroke-width="1.3"/><path d="M8 1.8v2M8 12.2v2M1.8 8h2M12.2 8h2M3.6 3.6l1.4 1.4M11 11l1.4 1.4M12.4 3.6 11 5M5 11l-1.4 1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        规则配置
+      </button>
+    </nav>
+
+    <div class="side-foot">
+      <div class="side-user">
+        <span class="avatar avatar-sm" id="sideAvatar">见山</span>
+        <div class="su-text"><b id="sideName">—</b><span id="sideRole">管理员</span></div>
+      </div>
+      <button class="side-logout" id="btnLogout" title="退出登录">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M6 2.5H3.8A1.3 1.3 0 0 0 2.5 3.8v8.4a1.3 1.3 0 0 0 1.3 1.3H6M10 11l3-3-3-3M13 8H6" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="page-head">
+      <div>
+        <h1 id="pageTitle">运营概览</h1>
+        <p id="pageSub">客服中心的实时运行状态与近期趋势</p>
+      </div>
+      <div class="head-actions" id="pageActions"></div>
+    </header>
+
+    <div class="page-body scroll">
+
+      <!-- 概览 -->
+      <section id="view-overview">
+        <div class="kpi-grid" id="kpiGrid"></div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-head">
+              <h3>会话趋势</h3>
+              <div class="legend">
+                <span><i style="background:#1f2a3c"></i>人工接待</span>
+                <span><i style="background:#e8582a"></i>机器人解决</span>
+                <span><i style="background:#dfe4ec"></i>进行中/未结束</span>
+              </div>
+            </div>
+            <div class="card-body"><div class="chart-wrap" id="trendChart"></div></div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <h3>满意度分布</h3>
+              <span class="muted tiny" id="csatMeta">—</span>
+            </div>
+            <div class="card-body"><div id="csatChart"></div></div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-head"><h3>客服工作量</h3><span class="muted tiny">按接待会话数排序</span></div>
+            <div class="card-body" id="agentRank"></div>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <h3>知识缺口</h3>
+              <span class="muted tiny">低置信度提问，建议补充知识库</span>
+            </div>
+            <div class="card-body" id="kbGaps"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 会话记录 -->
+      <section id="view-records" class="hidden">
+        <div class="card filter-card">
+          <div class="filter-row">
+            <input class="input" id="fq" placeholder="搜索访客姓名或聊天内容" style="max-width:240px" />
+            <select class="select" id="fStatus" style="width:128px">
+              <option value="all">全部状态</option>
+              <option value="active">会话中</option>
+              <option value="waiting">排队中</option>
+              <option value="closed">已结束</option>
+            </select>
+            <select class="select" id="fAgent" style="width:150px">
+              <option value="all">全部接待</option>
+              <option value="bot">仅机器人</option>
+            </select>
+            <select class="select" id="fCsat" style="width:132px">
+              <option value="all">全部评价</option>
+              <option value="rated">已评价</option>
+              <option value="unrated">未评价</option>
+              <option value="low">低分（≤3）</option>
+            </select>
+            <input class="input" type="date" id="fFrom" style="width:142px" />
+            <span class="muted tiny">至</span>
+            <input class="input" type="date" id="fTo" style="width:142px" />
+            <button class="btn btn-primary btn-sm" id="btnSearch">查询</button>
+            <button class="btn btn-sm" id="btnReset">重置</button>
+          </div>
+        </div>
+        <div class="card table-card">
+          <div class="table-scroll">
+            <table class="table" id="recordTable">
+              <thead>
+                <tr>
+                  <th style="width:74px">会话</th>
+                  <th>访客</th>
+                  <th>接待</th>
+                  <th style="width:96px">状态</th>
+                  <th style="width:88px">时长</th>
+                  <th style="width:110px">满意度</th>
+                  <th style="width:128px">开始时间</th>
+                  <th style="width:76px"></th>
+                </tr>
+              </thead>
+              <tbody id="recordBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 知识库 -->
+      <section id="view-kb" class="hidden">
+        <div class="card table-card">
+          <div class="kb-toolbar">
+            <div class="search-box" style="max-width:280px">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.6" stroke="currentColor" stroke-width="1.4"/><path d="m10.6 10.6 3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+              <input id="kbQ" placeholder="搜索问题或关键词" />
+            </div>
+            <span class="muted tiny" id="kbCount">—</span>
+          </div>
+          <div class="table-scroll">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>问题</th>
+                  <th style="width:110px">分类</th>
+                  <th style="width:88px">命中</th>
+                  <th style="width:88px">状态</th>
+                  <th style="width:118px">更新时间</th>
+                  <th style="width:132px"></th>
+                </tr>
+              </thead>
+              <tbody id="kbBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 客服团队 -->
+      <section id="view-team" class="hidden">
+        <div class="team-grid" id="teamGrid"></div>
+      </section>
+
+      <!-- 规则配置 -->
+      <section id="view-rules" class="hidden">
+        <div class="grid-rules">
+          <div class="card">
+            <div class="card-head"><h3>会话与转人工规则</h3></div>
+            <div class="card-body">
+              <form id="rulesForm" class="rules-form">
+                <div class="field">
+                  <label>品牌名称</label>
+                  <input class="input" name="brand_name" />
+                </div>
+                <div class="field">
+                  <label>访客进入时的欢迎语</label>
+                  <textarea class="textarea" name="welcome" style="min-height:76px"></textarea>
+                </div>
+                <div class="field">
+                  <label>知识库置信度阈值</label>
+                  <div class="range-row">
+                    <input type="range" name="confidence_threshold" min="0.1" max="0.8" step="0.01" id="thresholdRange" />
+                    <b class="mono" id="thresholdVal">0.34</b>
+                  </div>
+                  <span class="hint">低于该阈值时机器人先澄清；连续 2 次低置信度自动转人工。当前生效值会在右侧规则说明中更新。</span>
+                </div>
+                <div class="field">
+                  <label>单个客服最大同时接待数</label>
+                  <input class="input" type="number" name="max_concurrent" min="1" max="20" style="max-width:120px" />
+                </div>
+                <div class="field switch-row">
+                  <div>
+                    <label>启用自动分配</label>
+                    <span class="hint">开启后，排队会话会按「在线 + 负载最低」自动分配给客服</span>
+                  </div>
+                  <label class="switch">
+                    <input type="checkbox" name="auto_assign" id="autoAssign" />
+                    <span></span>
+                  </label>
+                </div>
+                <div class="field">
+                  <label>无人值守时的排队提示</label>
+                  <input class="input" name="queue_notice" />
+                </div>
+                <div class="field">
+                  <label>人工服务时间</label>
+                  <input class="input" name="work_hours" />
+                </div>
+                <div class="field">
+                  <label>会话结束时的评价引导语</label>
+                  <input class="input" name="rating_prompt" />
+                </div>
+                <div class="form-foot">
+                  <button class="btn btn-primary" type="submit">保存配置</button>
+                  <span class="muted tiny" id="rulesHint"></span>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h3>转人工判定规则</h3><span class="muted tiny">当前生效</span></div>
+            <div class="card-body">
+              <ul class="rule-list">
+                <li><b>访客主动要求</b><span>命中「转人工 / 人工客服 / 真人」等表达，立即进入队列</span></li>
+                <li><b>置信度不足</b><span>首次低于阈值先澄清并给出候选问题；连续 2 次自动转人工</span></li>
+                <li><b>负面情绪</b><span>出现投诉、退钱、曝光等词且置信度低于 0.6，直接转人工</span></li>
+                <li><b>兜底无答案</b><span>知识库无匹配时，提示可转人工，不编造答案</span></li>
+              </ul>
+              <div class="rule-note">
+                <b>分配算法</b>
+                <p>在「在线」且「当前接待数 &lt; 最大并发」的客服中，选择负载最低者；负载相同时按工号轮转。每 3 秒扫描一次队列，客服上线或结束会话后会自动补位。</p>
+              </div>
+              <div class="rule-note">
+                <b>权限边界</b>
+                <p>管理员只做监控与配置，不参与一线接待、不能代替客服发消息；客服只能查看与回复分配给自己的会话，可抢接排队会话、转接给其他在线客服。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script src="/assets/common.js"></script>
+<script src="/assets/admin.js"></script>
+</body>
+</html>
