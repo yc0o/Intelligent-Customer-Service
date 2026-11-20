@@ -9,9 +9,7 @@ pipeline {
   }
 
   environment {
-    APP_DIR = '/opt/xigu/app'
-    SERVICE = 'xigu'
-    PORT    = '3000'
+    PORT = '3000'
   }
 
   stages {
@@ -39,22 +37,13 @@ pipeline {
     }
 
     stage('部署到生产') {
-      when { branch 'main' }
       steps {
-        sh '''
-          set -e
-          test -d "$APP_DIR" || { echo "部署目录 $APP_DIR 不存在"; exit 1; }
-          rsync -a --delete \
-            --exclude='.git' --exclude='data' --exclude='node_modules' \
-            "$WORKSPACE"/ "$APP_DIR"/
-          echo "代码已同步，重启服务"
-          sudo -n /usr/bin/systemctl restart "$SERVICE"
-        '''
+        // 部署动作统一收敛到服务器脚本：拉取 → 语法校验 → 重启 → 健康检查 → 失败回滚
+        sh 'sudo -n /usr/local/bin/xigu-deploy.sh'
       }
     }
 
     stage('健康检查') {
-      when { branch 'main' }
       steps {
         sh '''
           set -e
