@@ -18,6 +18,43 @@ npm run reset      # 重置演示数据（需重启服务）
 
 ---
 
+## 线上部署
+
+| 项 | 值 |
+| --- | --- |
+| 访问地址 | http://8.136.150.236/ |
+| 服务器 | 阿里云 ECS · Ubuntu 22.04 · 2C4G · 华东1（杭州） |
+| 运行时 | Node.js 22.22.2（`/usr/local/bin/node`） |
+| 进程管理 | systemd `xigu.service`，监听 `127.0.0.1:3000` |
+| 反向代理 | Nginx `:80` → `3000`，SSE 已关闭缓冲 |
+| CI/CD | GitHub push → Jenkins SCM 轮询（1 分钟）→ `xigu-deploy.sh` → 重启 → 健康检查 |
+| 代码目录 | `/opt/xigu/app` |
+| 数据目录 | `/var/lib/xigu/app.db`（SQLite WAL） |
+| 部署日志 | `/var/log/xigu-deploy.log` |
+
+一次推送的完整链路：
+
+```
+git push origin main
+  → Jenkins 检测到新提交（SCM 轮询，≤1 分钟）
+  → /usr/local/bin/xigu-deploy.sh
+      git fetch + reset --hard
+      node --check 全量语法校验
+      systemctl restart xigu
+      curl /api/health 连续 20 次探活
+      失败则回滚到上一个提交并重启
+```
+
+运维命令：
+
+```bash
+systemctl status xigu              # 服务状态
+journalctl -u xigu -f              # 应用日志
+tail -f /var/log/xigu-deploy.log   # 部署日志
+```
+
+> 该实例为公开演示环境，使用仓库内置演示账号（`admin/admin123` 等），**请勿录入真实客户数据**。
+
 ## 一、市面主流平台功能调研
 
 调研对象覆盖海外以工单/会话为中心的两类代表产品（Zendesk、Intercom），以及国内在线客服厂商的通用形态（网易七鱼、智齿客服、Udesk、美洽、中通天鸿等）。
